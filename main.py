@@ -1,3 +1,4 @@
+# ===== 1. СТАНДАРТНЫЕ ИМПОРТЫ =====
 import telebot
 import requests
 import json
@@ -8,6 +9,8 @@ from telebot import types
 from datetime import datetime
 import os
 from dotenv import load_dotenv
+from flask import Flask  # Добавляем Flask сюда
+
 
 load_dotenv()
 
@@ -26,6 +29,28 @@ if not WEATHER_API_KEY:
 print(f"✅ BOT_TOKEN: {TELEGRAM_BOT_TOKEN[:10]}...")
 print(f"✅ WEATHER_API_KEY: {WEATHER_API_KEY[:10]}...")
 
+# ===== FLASK-СЕРВЕР ДЛЯ PING =====
+# Создаем Flask-приложение
+app = Flask('')
+
+@app.route('/')
+def home():
+    return "✅ Weather Bot is running!", 200
+
+@app.route('/health')
+def health():
+    return "OK", 200
+
+def run_web_server():
+    port = int(os.environ.get('PORT', 8080))
+    app.run(host='0.0.0.0', port=port, debug=False)
+
+# ===== 4. ЗАПУСКАЕМ FLASK В ОТДЕЛЬНОМ ПОТОКЕ =====
+web_thread = Thread(target=run_web_server, daemon=True)
+web_thread.start()
+print("🌐 Web server started on port 8080")
+
+# ===== 5. ВЕСЬ ВАШ ОСТАЛЬНОЙ КОД (БЕЗ ИЗМЕНЕНИЙ) =====
 bot = telebot.TeleBot(TELEGRAM_BOT_TOKEN)
 
 def load_user_data():
