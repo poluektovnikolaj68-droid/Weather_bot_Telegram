@@ -18,11 +18,6 @@ USER_DATA_FILE = 'user_data.json'
 
 bot = telebot.TeleBot(TELEGRAM_BOT_TOKEN)
 
-
-def progress_subscription(message):
-    API_KEY = WEATHER_API_KEY
-    print(f"🔍 API Key: {API_KEY[:10]}...")
-
 def load_user_data():
     try:
         with open(user_data_file, 'r', encoding='utf-8') as f:
@@ -132,6 +127,7 @@ def ask_subscribe_city(message):
 
 
 def progress_subscription(message):
+    API_KEY = WEATHER_API_KEY
     print("=" * 50)
     print("🟢 ФУНКЦИЯ progress_subscription ВЫЗВАНА")
 
