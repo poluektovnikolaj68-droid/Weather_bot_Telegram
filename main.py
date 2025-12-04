@@ -11,6 +11,40 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
+
+import os
+import sys
+
+print("=" * 50)
+print("🚀 ЗАПУСК БОТА")
+print("=" * 50)
+
+print("\n🔍 ВСЕ ПЕРЕМЕННЫЕ ОКРУЖЕНИЯ:")
+for key, value in sorted(os.environ.items()):
+    if any(k in key.lower() for k in ['token', 'key', 'api', 'secret']):
+        masked = value[:10] + "..." if value and len(value) > 10 else "***СКРЫТО***"
+        print(f"  {key}: {masked}")
+
+
+bot_token = os.getenv('BOT_TOKEN')
+weather_key = os.getenv('WEATHER_API_KEY')
+
+print(f"\n✅ BOT_TOKEN: {'ЕСТЬ (' + str(len(bot_token)) + ' символов)' if bot_token else '❌ НЕТ!'}")
+print(f"✅ WEATHER_API_KEY: {'ЕСТЬ (' + str(len(weather_key)) + ' символов)' if weather_key else '❌ НЕТ!'}")
+
+if not bot_token:
+    print("\n❌ КРИТИЧЕСКАЯ ОШИБКА: BOT_TOKEN не найден!")
+    print("Добавьте переменную BOT_TOKEN в Render Environment")
+    sys.exit(1)
+
+if not weather_key:
+    print("\n❌ КРИТИЧЕСКАЯ ОШИБКА: WEATHER_API_KEY не найден!")
+    print("Добавьте переменную WEATHER_API_KEY в Render Environment")
+    sys.exit(1)
+
+print(f"\n🎉 Все ключи найдены! Запускаем бота...")
+print("=" * 50)
+
 TELEGRAM_BOT_TOKEN = os.getenv('BOT_TOKEN')
 WEATHER_API_KEY = os.getenv('WEATHER_API_KEY')
 USER_DATA_FILE = 'user_data.json'
