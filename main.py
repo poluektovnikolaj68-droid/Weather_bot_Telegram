@@ -15,6 +15,17 @@ TELEGRAM_BOT_TOKEN = os.getenv('BOT_TOKEN')
 WEATHER_API_KEY = os.getenv('WEATHER_API_KEY')
 USER_DATA_FILE = 'user_data.json'
 
+if not TELEGRAM_BOT_TOKEN:
+    print("❌ ОШИБКА: BOT_TOKEN не найден!")
+    exit(1)
+
+if not WEATHER_API_KEY:
+    print("❌ ОШИБКА: WEATHER_API_KEY не найден!")
+    exit(1)
+
+print(f"✅ BOT_TOKEN: {TELEGRAM_BOT_TOKEN[:10]}...")
+print(f"✅ WEATHER_API_KEY: {WEATHER_API_KEY[:10]}...")
+
 
 bot = telebot.TeleBot(TELEGRAM_BOT_TOKEN)
 
@@ -127,7 +138,6 @@ def ask_subscribe_city(message):
 
 
 def progress_subscription(message):
-    API_KEY = WEATHER_API_KEY
     print("=" * 50)
     print("🟢 ФУНКЦИЯ progress_subscription ВЫЗВАНА")
 
@@ -136,14 +146,14 @@ def progress_subscription(message):
 
     print(f"🔍 Получен город: '{city}'")
     print(f"🔍 User ID: {user_id}")
-    print(f"🔍 API Key: {API_KEY[:10]}...")
+    print(f"🔍 API Key: {WEATHER_API_KEY[:10]}...")
 
     if not city:
         print("❌ Город пустой!")
         bot.send_message(user_id, "❌ Вы не ввели город. Попробуйте снова.")
         return
 
-    url = f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric&lang=ru'
+    url = f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={WEATHER_API_KEY}&units=metric&lang=ru'
     print(f"🔍 URL запроса: {url}")
 
     try:
@@ -188,7 +198,7 @@ def progress_city_change(message):
 
     try:
         text_response = requests.get(
-            f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric&lang=ru',
+            f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={WEATHER_API_KEY}&units=metric&lang=ru',
             timeout=10)
 
         if text_response.status_code == 200:
@@ -264,7 +274,7 @@ def get_weather_data(message, city):
     if not os.path.exists('Weather_bot_photos'):
         print("⚠️ Папка 'Weather_bot_photos' не найдена! Создайте папку и добавьте изображения.")
 
-    res = requests.get(f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric&lang=ru')
+    res = requests.get(f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={WEATHER_API_KEY}&units=metric&lang=ru')
 
     if res.status_code == 200:
         data = json.loads(res.text)
@@ -329,7 +339,7 @@ def send_daily_weather():
             user_id = user['user_id']
 
             res = requests.get(
-                f'https://api.openweathermap.org/data/2.5/forecast?q={city}&appid={API_KEY}&units=metric&lang=ru')
+                f'https://api.openweathermap.org/data/2.5/forecast?q={city}&appid={WEATHER_API_KEY}&units=metric&lang=ru')
 
             if res.status_code == 200:
                 data = json.loads(res.text)
