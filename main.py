@@ -10,15 +10,15 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
-API_key = os.getenv('API_KEY')
+
+TELEGRAM_BOT_TOKEN = os.getenv('BOT_TOKEN')
+WEATHER_API_KEY = os.getenv('WEATHER_API_KEY')
+USER_DATA_FILE = 'user_data.json'
 
 
+bot = telebot.TeleBot(TELEGRAM_BOT_TOKEN)
 
-from config import Config
-bot = telebot.TeleBot(Config.TELEGRAM_BOT_TOKEN)  # Токен из config.py
-API_KEY = Config.WEATHER_API_KEY                  # API ключ из config.py
-user_data_file = Config.USER_DATA_FILE
+
 
 
 def load_user_data():
@@ -408,4 +408,6 @@ def start_scheduler():
 
 
 start_scheduler()
-bot.polling(none_stop=True)
+if __name__ == "__main__":
+    print("🤖 Бот запущен и работает...")
+    bot.polling(none_stop=True)
