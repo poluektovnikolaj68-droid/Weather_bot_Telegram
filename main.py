@@ -9,8 +9,7 @@ from telebot import types
 from datetime import datetime
 import os
 from dotenv import load_dotenv
-from flask import Flask  # Добавляем Flask сюда
-
+from flask import Flask
 
 load_dotenv()
 
